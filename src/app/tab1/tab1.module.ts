@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     ],
     declarations: [Tab1Page],
     providers: [
-        Geolocation
+        Geolocation,
+        LocationAccuracy
     ]
 })
 export class Tab1PageModule { }

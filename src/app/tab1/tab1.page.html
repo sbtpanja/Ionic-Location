@@ -14,11 +14,12 @@
             <ion-card-title>Watching Position</ion-card-title>
         </ion-card-header>
         <ion-card-content *ngIf="location?.coords">
+            <p>Count : {{ count }}</p>
             <p>Latitude : {{location.coords.latitude }}</p>
             <p>Longitude : {{location.coords.longitude}}</p>
             <p>Accuracy : {{location.coords.accuracy }}</p>
             <p>Altitude : {{location.coords.altitude }}</p>
-            <p>Altitude Accuracy{{location.coords.altitudeAccuracy }}</p>
+            <p>Altitude Accuracy :{{location.coords.altitudeAccuracy }}</p>
             <p>Heading : {{location.coords.heading }}</p>
             <p>Speed : {{location.coords.speed }}</p>
             <p>Time Stamp : {{ lastUpdatedon | date:'mediumTime' }}</p>
