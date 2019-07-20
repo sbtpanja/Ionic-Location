@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Geolocation, Geoposition, GeolocationOptions } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Subscription } from 'rxjs';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Component({
     selector: 'app-tab1',
@@ -14,16 +15,35 @@ export class Tab1Page implements OnInit, OnDestroy {
     lastUpdatedon: Date;
     watching: Subscription;
     count: number;
-    constructor(private geolocation: Geolocation, private locationAccuracy: LocationAccuracy) { }
+    constructor(private geolocation: Geolocation,
+        private androidPermissions: AndroidPermissions,
+        private locationAccuracy: LocationAccuracy) { }
 
     async ngOnInit() {
+        
+        this.count = 0;
+
+        this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(result => {
+            alert(result.hasPermission);
+            if (result.hasPermission) {
+                this.requestLocation();
+            } else {
+                this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(async () => {
+                    this.requestLocation();
+                }, error => {
+                    alert('requestPermission Error requesting location permissions ' + error)
+                });
+            }
+        });
+    }
+
+    async requestLocation() {
         let options: GeolocationOptions = {
             maximumAge: 3000,
             timeout: 5000,
             enableHighAccuracy: true,
         };
-        this.count = 0;
-        
+
         var canRequest = await this.locationAccuracy.canRequest();
         if (canRequest) {
             try {
@@ -41,10 +61,8 @@ export class Tab1Page implements OnInit, OnDestroy {
             }
 
         } else {
-            alert("GPS already is being used by some other Application");
+            alert("Please enable location");
         }
-
-
     }
 
     ngOnDestroy() {
