@@ -1,7 +1,8 @@
 {
   "name": "AutoStart",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
